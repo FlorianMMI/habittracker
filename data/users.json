@@ -1,0 +1,35 @@
+[
+  {
+    "id": "user_1760515169666_t7zyida",
+    "email": "test@test.en",
+    "password": "$2b$10$fCzB3qebXUmsVmMxWEjzvOqMem1WGvDQ096VsbU1iUSDPSrF2yPhm",
+    "firstName": "Bounissou",
+    "lastName": "Bounissou",
+    "createdAt": "2025-10-15T07:59:29.666Z",
+    "isValidated": false,
+    "verifyToken": null,
+    "verifyTokenExpires": null
+  },
+  {
+    "id": "user_1760949451905_76hxqgq",
+    "email": "florian.bounissou@etu.unilim.fr",
+    "password": "$2b$10$.lWPJULUVyNReyKVkMNUoOyWvJOsX1a6ZhpYP9xrlMip8DiUU6nHm",
+    "firstName": "Bounissou",
+    "lastName": "Florian",
+    "createdAt": "2025-10-20T08:37:31.905Z",
+    "isValidated": false,
+    "verifyToken": null,
+    "verifyTokenExpires": null
+  },
+  {
+    "id": "user_1763106117444_5m2fxmm",
+    "email": "florianbounissoupro@gmail.com",
+    "password": "$2b$10$oPoi5kZ1QHm8Jia5p6iC6OEkVxGFyASct9aueQAM499Fq9L43aSCu",
+    "firstName": "Bounissou",
+    "lastName": "Florian",
+    "createdAt": "2025-11-14T07:41:57.444Z",
+    "isValidated": true,
+    "verifyToken": null,
+    "verifyTokenExpires": null
+  }
+]
