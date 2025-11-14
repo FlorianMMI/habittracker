@@ -24,7 +24,7 @@ export async function POST(req: Request) {
 
     // Générer un token de vérification et le stocker (valide 24h)
     const token = generateValidationToken();
-    const expires = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+    const expires = new Date(Date.now() + 24 * 60 * 60 * 1000);
     await setUserVerificationToken(user.id, token, expires);
 
     // Envoyer email de validation (ne bloque pas la création si l'envoi échoue)
