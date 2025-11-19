@@ -67,7 +67,6 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
               id="email"
-              label="Adresse email"
               type="email"
               autoComplete="email"
               value={email}
@@ -77,7 +76,6 @@ export default function LoginPage() {
 
             <Input
               id="password"
-              label="Mot de passe"
               type="password"
               autoComplete="current-password"
               value={password}
