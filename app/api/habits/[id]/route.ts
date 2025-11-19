@@ -1,10 +1,7 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { getHabitById, deleteHabit } from "@/lib/habits";
 
-export async function GET(
-  
-  { params }: { params: { id?: string } }
-) {
+export async function GET(request: NextRequest, { params }: { params: { id?: string } }) {
   try {
     const id = params?.id;
     if (!id) {
@@ -26,10 +23,7 @@ export async function GET(
 }
 
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: { id?: string } }
-) {
+export async function DELETE(request: NextRequest, { params }: { params: { id?: string } }) {
   try {
     const id = params?.id;
     if (!id) {
