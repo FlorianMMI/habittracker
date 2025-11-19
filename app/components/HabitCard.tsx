@@ -1,7 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/app/providers/ToastProvider";
 
 type HabitType = {
   id: string;
@@ -18,6 +19,35 @@ interface HabitCardProps {
 
 export default function HabitCard({ habit }: HabitCardProps) {
   const router = useRouter();
+  const { showToast } = useToast();
+  const [deleting, setDeleting] = useState(false);
+
+  async function handleDelete(e: React.MouseEvent) {
+    e.stopPropagation();
+    
+    if (!confirm(`Êtes-vous sûr de vouloir supprimer "${habit.name}" ?`)) {
+      return;
+    }
+
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/habits/${habit.id}`, {
+        method: "DELETE",
+      });
+
+      if (res.ok) {
+        showToast("Habitude supprimée avec succès", "success");
+        router.refresh();
+      } else {
+        const data = await res.json();
+        showToast(data.error || "Erreur lors de la suppression", "error");
+      }
+    } catch (err) {
+      showToast("Erreur réseau", "error");
+    } finally {
+      setDeleting(false);
+    }
+  }
 
   return (
     <div
@@ -43,13 +73,11 @@ export default function HabitCard({ habit }: HabitCardProps) {
         </div>
         <div className="flex items-center gap-2">
           <button
-            aria-label="Edit"
-            title="Modifier"
-            className="p-2 rounded hover:bg-muted"
-            onClick={(e) => {
-              e.stopPropagation();
-              router.push(`/habits/${habit.id}`);
-            }}
+            aria-label="Delete"
+            title="Supprimer"
+            className="p-2 rounded hover:bg-destructive/10 text-destructive disabled:opacity-50"
+            onClick={handleDelete}
+            disabled={deleting}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +90,7 @@ export default function HabitCard({ habit }: HabitCardProps) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-5M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
               />
             </svg>
           </button>

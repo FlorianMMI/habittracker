@@ -48,9 +48,7 @@ export default function RegisterPage() {
       if (res.ok) {
         setSuccess(true);
         setError(null);
-        setTimeout(() => {
-          router.push("/login");
-        }, 2000);
+        // Don't redirect automatically - user needs to verify email
       } else {
         const json = await res.json().catch(() => ({}));
         setError(json?.error || "Une erreur est survenue.");
@@ -66,18 +64,30 @@ export default function RegisterPage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background p-4">
         <div className="w-full max-w-md text-center">
-          <div className="bg-card border border-border rounded-xl shadow-sm p-6">
-            <div className="inline-flex items-center justify-center w-12 h-12 bg-green-100 rounded-lg mb-4">
-              <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          <div className="bg-card border border-border rounded-xl shadow-sm p-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-chart-1 rounded-full mb-4">
+              <svg className="w-8 h-8 text-chart-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
             </div>
-            <h2 className="text-xl font-bold text-foreground mb-2">
-              Inscription réussie !
+            <h2 className="text-2xl font-bold text-foreground mb-3">
+              Vérifiez votre email
             </h2>
-            <p className="text-muted-foreground">
-              Redirection vers la page de connexion...
+            <p className="text-muted-foreground mb-6">
+              Un email de vérification a été envoyé à <strong>{email}</strong>.
+              Veuillez cliquer sur le lien dans l'email pour activer votre compte.
             </p>
+            <div className="bg-muted/50 border border-border rounded-lg p-4 mb-6">
+              <p className="text-sm text-muted-foreground">
+                💡 Vous ne voyez pas l'email ? Vérifiez votre dossier spam ou courrier indésirable.
+              </p>
+            </div>
+            <Link
+              href="/login"
+              className="inline-block px-6 py-2.5 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors"
+            >
+              Retour à la connexion
+            </Link>
           </div>
         </div>
       </div>

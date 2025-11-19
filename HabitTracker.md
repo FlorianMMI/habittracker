@@ -6,7 +6,7 @@
 
 ### Authentification
 
-#### US-001 : Inscription
+✅
 - En tant que nouvel utilisateur, je veux créer un compte avec mon email et mot de passe afin de commencer à suivre mes habitudes.
 - Critères d'acceptation :
     - Formulaire : email, mot de passe, confirmation du mot de passe
@@ -16,15 +16,18 @@
     - Gestion des erreurs avec messages clairs
 
 #### US-002 : Connexion
+
+✅
 - En tant qu'utilisateur existant, je veux me connecter avec mes identifiants afin d'accéder à mes habitudes.
 - Critères d'acceptation :
     - Formulaire : email et mot de passe
     - Authentification via NextAuth
     - Identifiants invalides → message d'erreur
     - Succès → redirection vers le dashboard
-    - Option "Se souvenir de moi"
 
 #### US-003 : Routes protégées
+
+✅
 - En tant que système, je veux protéger les routes du dashboard afin que seuls les utilisateurs authentifiés puissent y accéder.
 - Critères d'acceptation :
     - Middleware vérifie l'authentification
@@ -37,6 +40,8 @@
 ### Fonctionnalités principales — Gestion des habitudes
 
 #### US-004 : Créer une habitude
+
+✅
 - En tant qu'utilisateur, je veux créer une nouvelle habitude avec un nom, une description et une fréquence.
 - Critères d'acceptation :
     - Formulaire : nom (requis), description (optionnelle), fréquence (quotidienne / hebdomadaire)
@@ -47,13 +52,15 @@
     - Redirection vers la liste des habitudes
 
 #### US-005 : Consulter la liste des habitudes
+
+✅
 - En tant qu'utilisateur, je veux voir toutes mes habitudes dans une liste.
 - Critères d'acceptation :
     - Affichage de toutes les habitudes de l'utilisateur
     - Afficher : nom, description, fréquence, date de création
     - État vide si aucune habitude
     - Skeleton de chargement pendant la récupération
-    - Design responsive (mobile + desktop)
+
 
 #### US-006 : Modifier une habitude
 - En tant qu'utilisateur, je veux modifier une habitude existante.

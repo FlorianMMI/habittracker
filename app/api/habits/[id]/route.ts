@@ -1,17 +1,60 @@
 import { NextResponse } from "next/server";
-import { getHabitById } from "@/lib/habits";
+import { getHabitById, deleteHabit } from "@/lib/habits";
 
-export async function GET(req: Request) {
+export async function GET(
+  
+  { params }: { params: { id?: string } }
+) {
   try {
-    const url = new URL(req.url);
-    const segments = url.pathname.split('/').filter(Boolean);
-    const id = segments[segments.length - 1];
-    if (!id) return NextResponse.json({ error: 'id is required' }, { status: 400 });
+    const id = params?.id;
+    if (!id) {
+      return NextResponse.json({ error: "id est requis" }, { status: 400 });
+    }
 
     const habit = await getHabitById(id);
-    if (!habit) return NextResponse.json({ error: 'Habit not found' }, { status: 404 });
+    if (!habit) {
+      return NextResponse.json({ error: "Habitude non trouvée" }, { status: 404 });
+    }
+
     return NextResponse.json({ habit }, { status: 200 });
-  } catch (err) {
-    return NextResponse.json({ error: 'Failed to fetch habit' }, { status: 500 });
+  } catch {
+    return NextResponse.json(
+      { error: "Échec lors de la récupération de l'habitude" },
+      { status: 500 }
+    );
   }
 }
+
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: { id?: string } }
+) {
+  try {
+    const id = params?.id;
+    if (!id) {
+      return NextResponse.json({ error: "id est requis" }, { status: 400 });
+    }
+
+    // TODO: Add userId verification from session
+    const success = await deleteHabit(id);
+    
+    if (!success) {
+      return NextResponse.json(
+        { error: "Habitude non trouvée ou non autorisée" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(
+      { message: "Habitude supprimée avec succès" },
+      { status: 200 }
+    );
+  } catch {
+    return NextResponse.json(
+      { error: "Échec lors de la suppression de l'habitude" },
+      { status: 500 }
+    );
+  }
+}
+

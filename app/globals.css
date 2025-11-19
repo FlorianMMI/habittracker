@@ -159,11 +159,6 @@
   }
 }
 
-
-body{
-  background-color: white;
-}
-
 @keyframes slideIn {
   from {
     transform: translateX(100%);

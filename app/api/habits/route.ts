@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getHabitsByUser, createHabit } from "@/lib/habits";
+import { getHabitsByUser, createHabit, updateHabit } from "@/lib/habits";
 
 // Note: This project currently uses file-based storage and doesn't have
 // a full auth session in these API handlers. We accept a query param or
@@ -64,7 +64,7 @@ export async function PUT(req: Request) {
       return NextResponse.json({ error: "Le nom doit contenir entre 3 et 50 caractères" }, { status: 400 });
     }
 
-    const { updateHabit } = await import("@/lib/habits");
+   
 
     const updated = await updateHabit(id, userId, { name: name.trim(), description, frequency });
     if (!updated) {

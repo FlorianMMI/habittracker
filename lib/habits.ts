@@ -68,14 +68,13 @@ export async function updateHabit(
 
 export async function deleteHabit(
   id: string,
-  userId: string
 ): Promise<boolean> {
   // Check ownership
   const habit = await prisma.habit.findUnique({
     where: { id },
   });
 
-  if (!habit || habit.userId !== userId) {
+  if (!habit) {
     return false;
   }
 

@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 
+
 // Server component to fetch habit by id and render details + client form
 export default async function HabitDetailsPage({ params }: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
@@ -35,15 +36,9 @@ export default async function HabitDetailsPage({ params }: { params: { id: strin
   // Render server-side details and include client HabitForm for editing
   return (
     <div className="max-w-3xl mx-auto py-8 px-4">
-      <h1 className="text-2xl font-bold mb-4">Détails de l'habitude</h1>
+      <h1 className="text-2xl font-bold mb-4">Modifier l'habitude</h1>
 
-      <div className="p-4 bg-card border border-border rounded-lg mb-6">
-        <h2 className="text-lg font-medium">{habit.name}</h2>
-        {habit.description && <p className="text-sm text-muted-foreground">{habit.description}</p>}
-        <p className="text-xs text-muted-foreground mt-1">{habit.frequency} • créé le {new Date(habit.createdAt).toLocaleDateString("fr-FR")}</p>
-      </div>
-
-      <div>
+      <div className="bg-background shadow-sm rounded-lg p-6">
         <HabitFormWrapper
           habit={{
             id: habit.id,
