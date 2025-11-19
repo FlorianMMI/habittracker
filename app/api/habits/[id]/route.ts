@@ -1,9 +1,12 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getHabitById, deleteHabit } from "@/lib/habits";
 
-export async function GET(request: NextRequest, { params }: { params: { id?: string } }) {
+export async function GET(
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
-    const id = params?.id;
+    const { id } = await context.params;
     if (!id) {
       return NextResponse.json({ error: "id est requis" }, { status: 400 });
     }
@@ -23,9 +26,12 @@ export async function GET(request: NextRequest, { params }: { params: { id?: str
 }
 
 
-export async function DELETE(request: NextRequest, { params }: { params: { id?: string } }) {
+export async function DELETE(
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
-    const id = params?.id;
+    const { id } = await context.params;
     if (!id) {
       return NextResponse.json({ error: "id est requis" }, { status: 400 });
     }
