@@ -25,7 +25,7 @@ export default async function DashboardPage() {
           </div>
 
           <div className="border-t border-border pt-6">
-            <h2 className="text-xl font-semibold text-foreground mb-4">Bienvenue, {session.user?.name} !</h2>
+            <h2 className="text-xl font-semibold text-foreground mb-4">Bienvenue, <span className="text-primary">{session.user?.name}</span>  !</h2>
 
             <div id="habits-root" className="space-y-6">
               <HabitListServer userId={userId} />

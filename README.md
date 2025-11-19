@@ -213,43 +213,6 @@ npx prisma studio
 - `frequency` : "daily" ou "weekly"
 - `createdAt` : Date de création
 
-## 🐛 Problème Résolu : Erreur Vercel avec Next.js 15
-
-### Symptôme
-```
-Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id?: string | undefined; }; }'.
-```
-
-### Cause
-Dans Next.js 15, les **route handlers dynamiques** (`[id]`) reçoivent `params` comme une **Promise** et non plus comme un objet direct. Cela fait partie de l'évolution vers un système plus asynchrone.
-
-### Solution
-Au lieu de destructurer directement `params` :
-
-```typescript
-// ❌ Ancienne méthode (Next.js 14 et avant)
-export async function GET(request: NextRequest, { params }: { params: { id?: string } }) {
-  const id = params.id;
-}
-```
-
-Il faut maintenant :
-1. Accepter `context` avec `params` comme Promise
-2. Attendre (`await`) la résolution de `params`
-
-```typescript
-// ✅ Nouvelle méthode (Next.js 15)
-export async function GET(
-  request: NextRequest,
-  context: { params: Promise<{ id: string }> }
-) {
-  const { id } = await context.params;
-  // Utiliser id normalement
-}
-```
-
-Cette modification garantit la compatibilité avec le système de build de Vercel et Next.js 15.
-
 ## 🚀 Déploiement Vercel
 
 1. **Pusher sur GitHub**

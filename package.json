@@ -6,6 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "prisma generate && next build --turbopack",
     "start": "next start",
+    "add-test-user": "node scripts/add_test_user.js",
     "postinstall": "prisma generate"
   },
   "dependencies": {

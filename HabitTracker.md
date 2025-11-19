@@ -63,6 +63,7 @@
 
 
 #### US-006 : Modifier une habitude
+✅
 - En tant qu'utilisateur, je veux modifier une habitude existante.
 - Critères d'acceptation :
     - Bouton "Modifier" sur la carte d'habitude
@@ -73,6 +74,7 @@
     - Notification toast de succès
 
 #### US-007 : Supprimer une habitude
+✅
 - En tant qu'utilisateur, je veux supprimer une habitude.
 - Critères d'acceptation :
     - Bouton "Supprimer" sur la carte d'habitude

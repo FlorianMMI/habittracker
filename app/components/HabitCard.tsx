@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/app/providers/ToastProvider";
+import { EditIcon, DeleteIcon, MoreIcon } from "@/lib/Icon";
 
 type HabitType = {
   id: string;
@@ -21,6 +22,8 @@ export default function HabitCard({ habit }: HabitCardProps) {
   const router = useRouter();
   const { showToast } = useToast();
   const [deleting, setDeleting] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
 
   async function handleDelete(e: React.MouseEvent) {
     e.stopPropagation();
@@ -49,6 +52,17 @@ export default function HabitCard({ habit }: HabitCardProps) {
     }
   }
 
+  useEffect(() => {
+    function onDocumentClick(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", onDocumentClick);
+    return () => document.removeEventListener("mousedown", onDocumentClick);
+  }, []);
+
   return (
     <div
       className="p-4 bg-card border border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors"
@@ -71,29 +85,54 @@ export default function HabitCard({ habit }: HabitCardProps) {
             </article>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <button
-            aria-label="Delete"
-            title="Supprimer"
-            className="p-2 rounded hover:bg-destructive/10 text-destructive disabled:opacity-50"
-            onClick={handleDelete}
-            disabled={deleting}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+        <div className="relative flex items-center gap-2">
+            <button
+              aria-label="Plus d'actions"
+              title="Plus d'actions"
+              className="p-2 rounded hover:bg-muted/30 text-primary focus:outline-none focus:ring-2 focus:ring-primary/40"
+              onClick={(e) => {
+                e.stopPropagation();
+                setMenuOpen((s) => !s);
+              }}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-              />
-            </svg>
-          </button>
+              <MoreIcon className="w-5 h-5" />
+            </button>
+
+          {menuOpen && (
+            <div
+              ref={menuRef}
+              role="menu"
+              aria-orientation="vertical"
+              className="absolute right-0 mt-2 w-44 bg-card border border-border rounded shadow-md z-10"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                role="menuitem"
+                className="w-full text-left px-3 py-2 hover:bg-muted/20 flex items-center gap-2"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setMenuOpen(false);
+                  router.push(`/habits/${habit.id}`);
+                }}
+              >
+                <EditIcon />
+                <span className="text-sm">Éditer</span>
+              </button>
+              <button
+                role="menuitem"
+                className="w-full text-left px-3 py-2 hover:bg-muted/20 flex items-center gap-2 text-destructive"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setMenuOpen(false);
+                  handleDelete(e as unknown as React.MouseEvent);
+                }}
+                disabled={deleting}
+              >
+                <DeleteIcon />
+                <span className="text-sm">Supprimer</span>
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
