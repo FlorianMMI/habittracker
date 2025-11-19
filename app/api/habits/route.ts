@@ -36,8 +36,15 @@ export async function POST(req: Request) {
     const habit = await createHabit(userId, { name: name.trim(), description, frequency });
 
     return NextResponse.json({ message: "Habit created", habit }, { status: 201 });
-  } catch (err) {
-    return NextResponse.json({ error: "Failed to create habit" }, { status: 500 });
+  } catch (err: any) {
+    console.error("Error creating habit:", err);
+    
+    // Check for foreign key constraint error (user doesn't exist)
+    if (err.code === 'P2003') {
+      return NextResponse.json({ error: "Utilisateur non trouvé. Veuillez vous reconnecter." }, { status: 404 });
+    }
+    
+    return NextResponse.json({ error: "Failed to create habit", details: err instanceof Error ? err.message : String(err) }, { status: 500 });
   }
 
 

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/app/components/Input";
 import { Button } from "@/app/components/Button";
+import { useToast } from "@/app/providers/ToastProvider";
 
 export default function HabitForm({ userId, onCreated, onCancel, habit }: { userId: string; onCreated?: () => void; onCancel: () => void; habit?: { id: string; name: string; description?: string; frequency: "daily" | "weekly" } }) {
   const [name, setName] = useState(habit?.name ?? "");
@@ -12,6 +13,8 @@ export default function HabitForm({ userId, onCreated, onCancel, habit }: { user
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const { showToast } = useToast();
+  
 
   const isEditing = Boolean(habit && habit.id);
 
@@ -42,6 +45,13 @@ export default function HabitForm({ userId, onCreated, onCancel, habit }: { user
 
       const data = await res.json();
       if (res.ok) {
+        // Show success toast
+        if (habit && habit.id) {
+          showToast("Habitude modifiée avec succès !", "success");
+        } else {
+          showToast("Habitude créée avec succès !", "success");
+        }
+        
         // reset only for create
         if (!habit) {
           setName("");
@@ -52,9 +62,11 @@ export default function HabitForm({ userId, onCreated, onCancel, habit }: { user
         onCancel();
       } else {
         setError(data.error || "Erreur lors de la requete");
+        showToast(data.error || "Erreur lors de la requete", "error");
       }
     } catch (err) {
       setError("Erreur réseau");
+      showToast("Erreur réseau", "error");
     } finally {
       setLoading(false);
     }
@@ -69,18 +81,18 @@ export default function HabitForm({ userId, onCreated, onCancel, habit }: { user
   }
 
   return (
-    <form onSubmit={handleCreate} className="space-y-4 p-4 bg-gray-50 border border-border rounded-lg">
-      <Input label="Nom" value={name} onChange={(e) => setName(e.target.value)} placeholder="Ex: Boire de l'eau" />
-      <Input label="Description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Optionnel" />
+    <form onSubmit={handleCreate} className="space-y-4 p-4 bg-white">
+      <Input  value={name} onChange={(e) => setName(e.target.value)} placeholder="Ex: Boire de l'eau" />
+      <Input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Optionnel" />
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Fréquence</label>
-        <div className="flex gap-3">
-          <label className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border ${frequency === 'daily' ? 'bg-primary/10 border-primary' : 'border-border'}`}>
+
+        <div className="flex justify-between w-full">
+          <label className={`inline-flex bg-muted items-center gap-2 px-3 py-1.5 rounded-lg border ${frequency === 'daily' ? ' border-primary' : 'border-border'}`}>
             <input type="radio" name="frequency" value="daily" checked={frequency === 'daily'} onChange={() => setFrequency('daily')} />
             Quotidienne
           </label>
-          <label className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border ${frequency === 'weekly' ? 'bg-primary/10 border-primary' : 'border-border'}`}>
+          <label className={`inline-flex bg-muted items-center gap-2 px-3 py-1.5 rounded-lg border ${frequency === 'weekly' ? ' border-primary' : 'border-border'}`}>
             <input type="radio" name="frequency" value="weekly" checked={frequency === 'weekly'} onChange={() => setFrequency('weekly')} />
             Hebdomadaire
           </label>

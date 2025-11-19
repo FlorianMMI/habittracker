@@ -1,8 +1,8 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
-import LogoutButton from "./LogoutButton";
-import HabitsClientShell from "../components/HabitsClientShell";
+import LogoutButton from "../ui/LogoutButton";
+import HabitListServer from "../components/HabitListServer";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
@@ -28,9 +28,7 @@ export default async function DashboardPage() {
             <h2 className="text-xl font-semibold text-gray-800 mb-4">Bienvenue, {session.user?.name} !</h2>
 
             <div id="habits-root" className="space-y-6">
-              <div className="flex items-center gap-4">
-                <HabitsClientShell userId={userId} />
-              </div>
+              <HabitListServer userId={userId} />
             </div>
           </div>
         </div>

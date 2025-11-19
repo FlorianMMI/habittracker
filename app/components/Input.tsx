@@ -1,19 +1,14 @@
 import React from "react";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label: string;
+ 
   error?: string;
 }
 
-export function Input({ label, error, className = "", ...props }: InputProps) {
+export function Input({ error, className = "", ...props }: InputProps) {
   return (
     <div className="space-y-2">
-      <label
-        htmlFor={props.id}
-        className="block text-sm font-medium text-foreground"
-      >
-        {label}
-      </label>
+      
       <input
         {...props}
         className={`
