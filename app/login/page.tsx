@@ -102,13 +102,6 @@ export default function LoginPage() {
           {/* Additional Options */}
           <div className="mt-6 pt-4 border-t border-border">
             <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  className="mr-2 h-4 w-4 text-primary border-border rounded focus:ring-ring"
-                />
-                <span className="text-muted-foreground">Se souvenir de moi</span>
-              </label>
               <Link 
                 href="#" 
                 className="text-primary hover:text-primary/80 transition-colors"

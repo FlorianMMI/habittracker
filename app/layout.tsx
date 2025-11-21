@@ -35,7 +35,9 @@ export default function RootLayout({
           <AuthProvider>
             <ToastProvider>
               <ConditionalNavBar />
-              {children}
+              <main className="md:ml-64 pt-16 md:pt-0">
+                {children}
+              </main>
             </ToastProvider>
           </AuthProvider>
         </ThemeProvider>

@@ -7,14 +7,14 @@ import { redirect } from "next/navigation";
 
 
 // Server component to fetch habit by id and render details + client form
-export default async function HabitDetailsPage({ params }: { params: { id: string } }) {
+export default async function HabitDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user?.id) {
     redirect("/login");
   }
 
-  const id = params.id;
+  const { id } = await params;
 
   // Fetch habit directly on the server using lib
   const habit = await getHabitById(id);

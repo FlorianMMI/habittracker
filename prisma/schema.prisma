@@ -24,13 +24,27 @@ model User {
 }
 
 model Habit {
-  id          String   @id @default(cuid())
+  id          String     @id @default(cuid())
   userId      String
   name        String
   description String?
-  frequency   String   @default("daily")
-  createdAt   DateTime @default(now())
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  frequency   String     @default("daily")
+  createdAt   DateTime   @default(now())
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  progress    Progress[]
 
   @@index([userId])
+}
+
+model Progress {
+  id        String   @id @default(cuid())
+  habitId   String
+  date      DateTime @default(now())
+  status    String   @default("done")
+  createdAt DateTime @default(now())
+  habit     Habit    @relation(fields: [habitId], references: [id], onDelete: Cascade)
+
+  @@unique([habitId, date])
+  @@index([habitId])
+  @@index([date])
 }

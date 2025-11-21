@@ -17,7 +17,7 @@ export default function HabitsPageClient({ userId, children }: { userId: string;
           <p className="text-sm text-muted-foreground">Gérez vos habitudes et suivez votre progression.</p>
         </article>
 
-        <CreateHabitButton userId={userId} onToggleForm={setShowForm} />
+        <CreateHabitButton userId={userId} onToggleForm={() => setShowForm(true)} />
       </div>
 
       {showForm && (

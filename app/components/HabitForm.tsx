@@ -139,11 +139,11 @@ async function handleSupprimer(e: React.FormEvent) {
           {isEditing ? "Enregistrer" : "Créer l'habitude"}
         </Button>
         
-        <Button type="button" variant="secondary" onClick={handleCancel}>
-          Annuler
-        </Button>
-
-        
+        {isEditing && (
+          <Button type="button" variant="secondary" onClick={handleCancel}>
+            Annuler
+          </Button>
+        )}
       </div>
     </form>
   );

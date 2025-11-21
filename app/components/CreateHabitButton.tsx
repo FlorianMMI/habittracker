@@ -1,29 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "./Button";
 
 interface CreateHabitButtonProps {
   userId: string;
-  onToggleForm: (show: boolean) => void;
+  onToggleForm: () => void;
 }
 
 export default function CreateHabitButton({ userId, onToggleForm }: CreateHabitButtonProps) {
-  const [showForm, setShowForm] = useState(false);
-
-  const handleToggle = () => {
-    const newState = !showForm;
-    setShowForm(newState);
-    onToggleForm(newState);
-  };
-
   return (
     <Button
       type="button"
       style={{ height: "50px", width: "200px" }}
-      onClick={handleToggle}
+      onClick={onToggleForm}
     >
-      {showForm ? "Fermer le formulaire" : "Rajouter une habitude"}
+      Rajouter une habitude
     </Button>
   );
 }
