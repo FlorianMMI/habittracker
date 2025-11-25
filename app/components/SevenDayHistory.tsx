@@ -112,8 +112,9 @@ export default function SevenDayHistory({ userId }: SevenDayHistoryProps) {
         </div>
 
         {/* Calendrier horizontal avec scroll */}
-        <div className="relative">
-          <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+        <div className="">
+          
+          <div className="flex gap-3 overflow-x-auto pb-4 custom-scrollbar">
             {history.map((day) => (
               <DayCell
                 key={day.date}
@@ -130,9 +131,7 @@ export default function SevenDayHistory({ userId }: SevenDayHistoryProps) {
             ))}
           </div>
 
-          {/* Gradient de fade sur les bords (mobile) */}
-          <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-card to-transparent pointer-events-none sm:hidden" />
-          <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-card to-transparent pointer-events-none sm:hidden" />
+        
         </div>
 
         {/* Légende */}

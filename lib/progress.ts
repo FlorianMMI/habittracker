@@ -63,6 +63,7 @@ export async function getProgressByHabit(habitId: string): Promise<Progress[]> {
 
 /**
  * Toggle la progression : crée si n'existe pas, supprime si existe
+ * Pour les habitudes hebdomadaires (weekly), valide toute la semaine (lundi à dimanche)
  */
 export async function toggleProgress(
   habitId: string,
@@ -71,18 +72,54 @@ export async function toggleProgress(
   const normalizedDate = new Date(date);
   normalizedDate.setHours(0, 0, 0, 0);
 
+  // Récupérer l'habitude pour vérifier la fréquence
+  const habit = await prisma.habit.findUnique({
+    where: { id: habitId },
+    select: { frequency: true },
+  });
+
+  if (!habit) {
+    throw new Error("Habitude non trouvée");
+  }
+
   const existing = await getProgressByDate(habitId, normalizedDate);
 
   if (existing) {
-    // Supprimer l'entrée existante
-    await prisma.progress.delete({
-      where: { id: existing.id },
-    });
+    // Si c'est une habitude hebdomadaire, supprimer toute la semaine
+    if (habit.frequency === "weekly") {
+      const weekDates = getWeekDates(normalizedDate);
+      await prisma.progress.deleteMany({
+        where: {
+          habitId,
+          date: { in: weekDates },
+        },
+      });
+    } else {
+      // Supprimer uniquement l'entrée du jour
+      await prisma.progress.delete({
+        where: { id: existing.id },
+      });
+    }
     return { completed: false, progress: null };
   } else {
-    // Créer une nouvelle entrée
-    const progress = await createProgress(habitId, normalizedDate);
-    return { completed: true, progress };
+    // Si c'est une habitude hebdomadaire, créer toute la semaine
+    if (habit.frequency === "weekly") {
+      const weekDates = getWeekDates(normalizedDate);
+      await prisma.progress.createMany({
+        data: weekDates.map(weekDate => ({
+          habitId,
+          date: weekDate,
+          status: "done",
+        })),
+        skipDuplicates: true, // Éviter les doublons si certains jours sont déjà validés
+      });
+      const progress = await getProgressByDate(habitId, normalizedDate);
+      return { completed: true, progress };
+    } else {
+      // Créer uniquement l'entrée du jour
+      const progress = await createProgress(habitId, normalizedDate);
+      return { completed: true, progress };
+    }
   }
 }
 
@@ -121,21 +158,41 @@ export async function deleteProgressByHabit(habitId: string): Promise<void> {
 }
 
 /**
- * Récupère l'historique des 7 derniers jours pour toutes les habitudes d'un utilisateur
+ * Obtient les dates de la semaine en cours (lundi à dimanche)
+ */
+function getWeekDates(referenceDate: Date = new Date()): Date[] {
+  const dates: Date[] = [];
+  const current = new Date(referenceDate);
+  current.setHours(0, 0, 0, 0);
+  
+  // Obtenir le jour de la semaine (0 = dimanche, 1 = lundi, ..., 6 = samedi)
+  const dayOfWeek = current.getDay();
+  // Calculer le décalage pour arriver au lundi (1)
+  const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+  
+  // Créer la date du lundi
+  const monday = new Date(current);
+  monday.setDate(current.getDate() + mondayOffset);
+  
+  // Générer les 7 jours de la semaine (lundi à dimanche)
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(monday);
+    date.setDate(monday.getDate() + i);
+    dates.push(date);
+  }
+  
+  return dates;
+}
+
+/**
+ * Récupère l'historique de la semaine en cours (lundi à dimanche) pour toutes les habitudes d'un utilisateur
  */
 export async function getSevenDayHistory(userId: string): Promise<{
   dates: Date[];
   progressByHabit: Map<string, Map<string, Progress>>;
 }> {
-  // Générer les 7 derniers jours (de aujourd'hui à J-6)
-  const dates: Date[] = [];
-  for (let i = 0; i < 7; i++) {
-    const date = new Date();
-    date.setDate(date.getDate() - i);
-    date.setHours(0, 0, 0, 0);
-    dates.push(date);
-  }
-  dates.reverse(); // Pour avoir l'ordre chronologique (plus ancien → plus récent)
+  // Générer les 7 jours de la semaine en cours (lundi à dimanche)
+  const dates = getWeekDates();
 
   // Récupérer toutes les habitudes de l'utilisateur
   const habits = await prisma.habit.findMany({

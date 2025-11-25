@@ -25,8 +25,8 @@ export default function HabitCard({ habit }: HabitCardProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
-  async function handleDelete(e: React.MouseEvent) {
-    e.stopPropagation();
+  async function handleDelete(e?: React.MouseEvent) {
+    if (e) e.stopPropagation();
     
     if (!confirm(`Êtes-vous sûr de vouloir supprimer "${habit.name}" ?`)) {
       return;
@@ -65,8 +65,8 @@ export default function HabitCard({ habit }: HabitCardProps) {
 
   return (
     <div
-      className="p-4 bg-card border border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors"
-      onClick={() => router.push(`/habits/${habit.id}`)}
+      className="p-4 bg-card border border-border rounded-lg hover:border-primary/50 transition-colors"
+      
     >
       <div className="flex justify-between items-start">
         <div className="flex items-start gap-3">
@@ -89,9 +89,8 @@ export default function HabitCard({ habit }: HabitCardProps) {
             <button
               aria-label="Plus d'actions"
               title="Plus d'actions"
-              className="p-2 rounded hover:bg-muted/30 text-primary focus:outline-none focus:ring-2 focus:ring-primary/40"
-              onClick={(e) => {
-                e.stopPropagation();
+              className="p-2 rounded hover:bg-muted/30 cursor-pointer text-primary focus:outline-none focus:ring-2 focus:ring-primary/40"
+              onClick={() => {
                 setMenuOpen((s) => !s);
               }}
             >
@@ -108,9 +107,8 @@ export default function HabitCard({ habit }: HabitCardProps) {
             >
               <button
                 role="menuitem"
-                className="w-full text-left px-3 py-2 hover:bg-muted/20 flex items-center gap-2"
-                onClick={(e) => {
-                  e.stopPropagation();
+                className="w-full text-left px-3 py-2 cursor-pointer hover:bg-muted/20 flex items-center gap-2"
+                onClick={() => {
                   setMenuOpen(false);
                   router.push(`/habits/${habit.id}`);
                 }}
@@ -120,11 +118,10 @@ export default function HabitCard({ habit }: HabitCardProps) {
               </button>
               <button
                 role="menuitem"
-                className="w-full text-left px-3 py-2 hover:bg-muted/20 flex items-center gap-2 text-destructive"
-                onClick={(e) => {
-                  e.stopPropagation();
+                className="w-full text-left px-3 py-2 cursor-pointer hover:bg-muted/20 flex items-center gap-2 text-destructive"
+                onClick={() => {
                   setMenuOpen(false);
-                  handleDelete(e as unknown as React.MouseEvent);
+                  handleDelete();
                 }}
                 disabled={deleting}
               >

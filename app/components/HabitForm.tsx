@@ -18,30 +18,6 @@ export default function HabitForm({ userId, onCreated, onCancel, habit }: { user
 
   const isEditing = Boolean(habit && habit.id);
 
-async function handleSupprimer(e: React.FormEvent) {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
-    try {
-      const res = await fetch(`/api/habits/${habit?.id}`, {
-        method: "DELETE",
-      });
-      if (res.ok) {
-        showToast("Habitude supprimée avec succès !", "success");
-        router.push("/dashboard");
-        router.refresh();
-      } else {
-        setError("Erreur lors de la suppression");
-        showToast("Erreur lors de la suppression", "error");
-      }
-    } catch {
-      setError("Erreur réseau");
-      showToast("Erreur réseau", "error");
-    } finally {
-      setLoading(false);
-    }
-  }
-
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
@@ -132,6 +108,8 @@ async function handleSupprimer(e: React.FormEvent) {
         </div>
       </div>
 
+
+
       {error && <p className="text-sm text-destructive">{error}</p>}
 
       <div className="flex gap-3 pt-2">
@@ -139,11 +117,11 @@ async function handleSupprimer(e: React.FormEvent) {
           {isEditing ? "Enregistrer" : "Créer l'habitude"}
         </Button>
         
-        {isEditing && (
+        
           <Button type="button" variant="secondary" onClick={handleCancel}>
             Annuler
           </Button>
-        )}
+       
       </div>
     </form>
   );

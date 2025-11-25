@@ -24,6 +24,10 @@ export async function GET(request: NextRequest) {
     const { dates, progressByHabit } = await getSevenDayHistory(userId);
 
     // Formater les données pour le client
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const todayKey = today.toISOString().split("T")[0];
+
     const history = dates.map((date) => {
       const dateKey = date.toISOString().split("T")[0];
       const habitsForDay = habits.map((habit) => {
@@ -44,7 +48,7 @@ export async function GET(request: NextRequest) {
           day: "numeric",
           month: "short",
         }),
-        isToday: dateKey === new Date().toISOString().split("T")[0],
+        isToday: dateKey === todayKey,
         habits: habitsForDay,
         completionRate:
           habitsForDay.length > 0

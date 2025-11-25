@@ -31,7 +31,7 @@ export default function NavBar() {
 
       <button
         onClick={toggleTheme}
-        className="flex items-center gap-2 text-base text-foreground font-medium hover:text-primary transition-colors w-full text-left"
+        className="flex items-center gap-2 text-base text-foreground font-medium hover:text-primary cursor-pointer transition-colors w-full text-left"
       >
         {theme === "dark" ? (
           <>
@@ -47,7 +47,7 @@ export default function NavBar() {
       </button>
 
       <div className="mt-4 pt-4 border-t border-border">
-        <LogoutButton />
+        <LogoutButton  />
       </div>
     </nav>
   );

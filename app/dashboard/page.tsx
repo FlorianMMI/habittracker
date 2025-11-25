@@ -16,7 +16,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-background sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto py-8">
+      <div className="max-w-4xl mx-auto">
         <div className="bg-card shadow-sm rounded-lg p-8">
           <div className="flex justify-between items-center mb-8">
             <div>
