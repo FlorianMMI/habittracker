@@ -24,13 +24,14 @@ export default function Toast({ message, type = "success", duration = 3000, onCl
       className={cn(
         "fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-lg border animate-slideIn",
         "flex items-center gap-3 min-w-[300px] max-w-md",
-        type === "success" && "bg-chart-1 border-chart-3 text-chart-3",
+        type === "success" &&
+          "bg-chart-1 border-chart-3 text-chart-3 dark:bg-slate-800 dark:border-slate-700 dark:text-white",
         type === "error" && "bg-chart-5 border-destructive text-destructive",
         type === "info" && "bg-chart-2 border-chart-2 text-foreground"
       )}
     >
       {type === "success" && (
-        <svg className="w-5 h-5 text-chart-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-5 h-5 text-chart-3 dark:text-white flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
         </svg>
       )}
@@ -40,7 +41,7 @@ export default function Toast({ message, type = "success", duration = 3000, onCl
         </svg>
       )}
       {type === "info" && (
-        <svg className="w-5 h-5 text-chart-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-5 h-5 text-chart-2 dark:text-white flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       )}

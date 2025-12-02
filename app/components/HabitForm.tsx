@@ -5,11 +5,34 @@ import { useRouter } from "next/navigation";
 import { Input } from "@/app/components/Input";
 import { Button } from "@/app/components/Button";
 import { useToast } from "@/app/providers/ToastProvider";
+import TagSelector, { TagData } from "@/app/components/TagSelector";
 
-export default function HabitForm({ userId, onCreated, onCancel, habit }: { userId: string; onCreated?: () => void; onCancel: () => void; habit?: { id: string; name: string; description?: string; frequency: "daily" | "weekly" } }) {
+interface HabitTag {
+  id: string;
+  name: string;
+  emoji: string;
+}
+
+interface HabitFormProps {
+  userId: string;
+  onCreated?: () => void;
+  onCancel: () => void;
+  habit?: {
+    id: string;
+    name: string;
+    description?: string;
+    frequency: "daily" | "weekly";
+    tags?: HabitTag[];
+  };
+}
+
+export default function HabitForm({ userId, onCreated, onCancel, habit }: HabitFormProps) {
   const [name, setName] = useState(habit?.name ?? "");
   const [description, setDescription] = useState(habit?.description ?? "");
   const [frequency, setFrequency] = useState<"daily" | "weekly">(habit?.frequency ?? "daily");
+  const [selectedTags, setSelectedTags] = useState<TagData[]>(
+    habit?.tags?.map((t) => ({ name: t.name, emoji: t.emoji })) ?? []
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -33,13 +56,13 @@ export default function HabitForm({ userId, onCreated, onCancel, habit }: { user
         res = await fetch(`/api/habits`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id: habit.id, userId, name, description, frequency }),
+          body: JSON.stringify({ id: habit.id, userId, name, description, frequency, tags: selectedTags }),
         });
       } else {
         res = await fetch(`/api/habits`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, name, description, frequency }),
+          body: JSON.stringify({ userId, name, description, frequency, tags: selectedTags }),
         });
       }
 
@@ -57,6 +80,7 @@ export default function HabitForm({ userId, onCreated, onCancel, habit }: { user
           setName("");
           setDescription("");
           setFrequency("daily");
+          setSelectedTags([]);
         }
         if (onCreated) onCreated();
         onCancel();
@@ -108,7 +132,10 @@ export default function HabitForm({ userId, onCreated, onCancel, habit }: { user
         </div>
       </div>
 
-
+      <TagSelector
+        selectedTags={selectedTags}
+        onChange={setSelectedTags}
+      />
 
       {error && <p className="text-sm text-destructive">{error}</p>}
 

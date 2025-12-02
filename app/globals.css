@@ -135,9 +135,9 @@
   --border: rgba(255,255,255,0.20); /* Border (20% white) */
   --input: rgba(255,255,255,0.15);
   --ring: #FF6900;
-  --chart-1: #DCFCE7;
-  --chart-2: #358C53;
-  --chart-3: #DCFCE7;
+  --chart-1: #059669; /* darker green for success */
+  --chart-2: #0ea5e9; /* darker info/teal */
+  --chart-3: #7c3aed; /* purple accent */
   --chart-4: #BC6F6F;
   --chart-5: #E46E6E; /* Red-p (dark) */
   --sidebar: #222222;

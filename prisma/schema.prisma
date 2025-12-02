@@ -31,9 +31,19 @@ model Habit {
   frequency   String     @default("daily")
   createdAt   DateTime   @default(now())
   user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tags        Tag[]
   progress    Progress[]
 
   @@index([userId])
+}
+
+model Tag {
+  id          String      @id @default(cuid())
+  name        String      
+  emoji       String      @default("🏷️")
+  habits      Habit[]
+
+  @@unique([name, emoji])
 }
 
 model Progress {

@@ -1,5 +1,9 @@
 import { prisma } from "./prisma";
 
+// ============================================================================
+// TYPES
+// ============================================================================
+
 export interface Progress {
   id: string;
   habitId: string;
@@ -8,16 +12,36 @@ export interface Progress {
   createdAt: Date;
 }
 
+// ============================================================================
+// UTILITAIRES DE DATE
+// ============================================================================
+
+/**
+ * Formate une date en YYYY-MM-DD sans conversion UTC
+ */
+function formatDateKey(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+/**
+ * Normalise une date à minuit (local)
+ */
+function normalizeToMidnight(date: Date): Date {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
+}
+
+// ============================================================================
+// FONCTIONS DE PROGRESSION
+// ============================================================================
+
 /**
  * Crée une entrée de progression pour une habitude à une date donnée
  */
-export async function createProgress(
-  habitId: string,
-  date: Date = new Date()
-): Promise<Progress> {
-  // Normaliser la date à minuit (00:00:00) pour éviter les doublons
-  const normalizedDate = new Date(date);
-  normalizedDate.setHours(0, 0, 0, 0);
+export async function createProgress(habitId: string, date: Date = new Date()): Promise<Progress> {
+  const normalizedDate = normalizeToMidnight(date);
 
   const progress = await prisma.progress.create({
     data: {
@@ -32,12 +56,8 @@ export async function createProgress(
 /**
  * Récupère la progression pour une habitude à une date donnée
  */
-export async function getProgressByDate(
-  habitId: string,
-  date: Date = new Date()
-): Promise<Progress | null> {
-  const normalizedDate = new Date(date);
-  normalizedDate.setHours(0, 0, 0, 0);
+export async function getProgressByDate(habitId: string, date: Date = new Date()): Promise<Progress | null> {
+  const normalizedDate = normalizeToMidnight(date);
 
   const progress = await prisma.progress.findUnique({
     where: {
@@ -69,8 +89,7 @@ export async function toggleProgress(
   habitId: string,
   date: Date = new Date()
 ): Promise<{ completed: boolean; progress: Progress | null }> {
-  const normalizedDate = new Date(date);
-  normalizedDate.setHours(0, 0, 0, 0);
+  const normalizedDate = normalizeToMidnight(date);
 
   // Récupérer l'habitude pour vérifier la fréquence
   const habit = await prisma.habit.findUnique({
@@ -106,12 +125,12 @@ export async function toggleProgress(
     if (habit.frequency === "weekly") {
       const weekDates = getWeekDates(normalizedDate);
       await prisma.progress.createMany({
-        data: weekDates.map(weekDate => ({
+        data: weekDates.map((weekDate) => ({
           habitId,
           date: weekDate,
           status: "done",
         })),
-        skipDuplicates: true, // Éviter les doublons si certains jours sont déjà validés
+        skipDuplicates: true,
       });
       const progress = await getProgressByDate(habitId, normalizedDate);
       return { completed: true, progress };
@@ -130,8 +149,7 @@ export async function getProgressForHabits(
   habitIds: string[],
   date: Date = new Date()
 ): Promise<Map<string, Progress>> {
-  const normalizedDate = new Date(date);
-  normalizedDate.setHours(0, 0, 0, 0);
+  const normalizedDate = normalizeToMidnight(date);
 
   const progressList = await prisma.progress.findMany({
     where: {
@@ -162,39 +180,36 @@ export async function deleteProgressByHabit(habitId: string): Promise<void> {
  */
 function getWeekDates(referenceDate: Date = new Date()): Date[] {
   const dates: Date[] = [];
-  const current = new Date(referenceDate);
-  current.setHours(0, 0, 0, 0);
-  
+  const current = normalizeToMidnight(referenceDate);
+
   // Obtenir le jour de la semaine (0 = dimanche, 1 = lundi, ..., 6 = samedi)
   const dayOfWeek = current.getDay();
-  // Calculer le décalage pour arriver au lundi (1)
+  // Calculer le décalage pour arriver au lundi
   const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-  
+
   // Créer la date du lundi
   const monday = new Date(current);
   monday.setDate(current.getDate() + mondayOffset);
-  
+
   // Générer les 7 jours de la semaine (lundi à dimanche)
   for (let i = 0; i < 7; i++) {
     const date = new Date(monday);
     date.setDate(monday.getDate() + i);
     dates.push(date);
   }
-  
+
   return dates;
 }
 
 /**
- * Récupère l'historique de la semaine en cours (lundi à dimanche) pour toutes les habitudes d'un utilisateur
+ * Récupère l'historique de la semaine en cours pour toutes les habitudes d'un utilisateur
  */
 export async function getSevenDayHistory(userId: string): Promise<{
   dates: Date[];
   progressByHabit: Map<string, Map<string, Progress>>;
 }> {
-  // Générer les 7 jours de la semaine en cours (lundi à dimanche)
   const dates = getWeekDates();
 
-  // Récupérer toutes les habitudes de l'utilisateur
   const habits = await prisma.habit.findMany({
     where: { userId },
     select: { id: true },
@@ -206,7 +221,6 @@ export async function getSevenDayHistory(userId: string): Promise<{
     return { dates, progressByHabit: new Map() };
   }
 
-  // Récupérer toutes les progressions pour ces habitudes sur les 7 derniers jours
   const startDate = dates[0];
   const endDate = dates[dates.length - 1];
 
@@ -220,7 +234,6 @@ export async function getSevenDayHistory(userId: string): Promise<{
     },
   });
 
-  // Organiser les données : habitId → date → Progress
   const progressByHabit = new Map<string, Map<string, Progress>>();
 
   habitIds.forEach((habitId) => {
@@ -228,7 +241,7 @@ export async function getSevenDayHistory(userId: string): Promise<{
   });
 
   progressList.forEach((p: any) => {
-    const dateKey = p.date.toISOString().split("T")[0];
+    const dateKey = formatDateKey(p.date);
     const habitMap = progressByHabit.get(p.habitId);
     if (habitMap) {
       habitMap.set(dateKey, p as Progress);

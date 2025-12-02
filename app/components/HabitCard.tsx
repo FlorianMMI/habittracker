@@ -5,6 +5,12 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/app/providers/ToastProvider";
 import { EditIcon, DeleteIcon, MoreIcon } from "@/lib/Icon";
 
+type TagType = {
+  id: string;
+  name: string;
+  emoji: string;
+};
+
 type HabitType = {
   id: string;
   userId: string;
@@ -12,6 +18,7 @@ type HabitType = {
   description?: string;
   frequency: "daily" | "weekly";
   createdAt: string;
+  tags?: TagType[];
 };
 
 interface HabitCardProps {
@@ -83,6 +90,19 @@ export default function HabitCard({ habit }: HabitCardProps) {
               </div>
               <p className="m-0">Créé le {new Date(habit.createdAt).toLocaleDateString("fr-FR")}</p>
             </article>
+            {habit.tags && habit.tags.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mt-2">
+                {habit.tags.map((tag) => (
+                  <span
+                    key={tag.id}
+                    className="inline-flex items-center gap-1 px-2 py-0.5 bg-primary/10 text-primary rounded-full text-xs"
+                  >
+                    <span>{tag.emoji}</span>
+                    <span>{tag.name}</span>
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
         </div>
         <div className="relative flex items-center gap-2">

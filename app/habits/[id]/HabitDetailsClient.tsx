@@ -34,7 +34,18 @@ export default function HabitDetailsClient({ id }: { id: string }) {
 
   return (
     <div>
-      <HabitForm userId={habit.userId} habit={{ id: habit.id, name: habit.name, description: habit.description, frequency: habit.frequency }} onCancel={() => { }} onCreated={() => { window.location.reload(); }} />
+      <HabitForm 
+        userId={habit.userId} 
+        habit={{ 
+          id: habit.id, 
+          name: habit.name, 
+          description: habit.description, 
+          frequency: habit.frequency,
+          tags: habit.tags 
+        }} 
+        onCancel={() => { }} 
+        onCreated={() => { window.location.reload(); }} 
+      />
     </div>
   );
 }

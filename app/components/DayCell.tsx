@@ -35,8 +35,8 @@ export default function DayCell({
 
   // Couleurs basées sur le statut — utilise les variables CSS définies dans `globals.css`
   const statusColors = {
-    done: "bg-success border-success text-success-foreground",
-    partial: "bg-chart-4 border-chart-4",
+    done: "bg-chart-1 border-chart-1 text-chart-1-foreground",
+    partial: "bg-amber-100 border-amber-400 text-amber-900 dark:bg-amber-900/30 dark:border-amber-600 dark:text-amber-100",
     missed: "bg-destructive/30 border-destructive/50 text-destructive",
     empty: "bg-secondary border-border text-muted-foreground",
   };
@@ -85,7 +85,7 @@ export default function DayCell({
         {/* Indicateur visuel du statut */}
         <div className="mt-2 flex items-center justify-center gap-1">
           {status === "done" && (
-            <div className="w-2 h-2 rounded-full bg-success animate-pulse" aria-hidden />
+            <div className="w-2 h-2 rounded-full bg-chart-1 animate-pulse" aria-hidden />
           )}
 
           {status === "partial" && (

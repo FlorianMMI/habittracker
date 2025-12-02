@@ -1,8 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
-import DailyHabitList from "../components/DailyHabitList";
-import SevenDayHistory from "../components/SevenDayHistory";
+import DashboardClient from "@/app/components/DashboardClient";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
@@ -43,20 +42,8 @@ export default async function DashboardPage() {
                 Suivez vos habitudes du jour et construisez votre routine parfaite 🔥
               </p>
             </div>
-
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-lg font-medium text-foreground mb-4">
-                  Mes habitudes d'aujourd'hui
-                </h3>
-                <DailyHabitList userId={userId} />
-              </div>
-
-              {/* Historique des 7 derniers jours */}
-              <div className="border-t border-border pt-6">
-                <SevenDayHistory userId={userId} />
-              </div>
-            </div>
+            
+            <DashboardClient userId={userId} />
           </div>
         </div>
       </div>

@@ -23,7 +23,7 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { userId, name, description, frequency } = body ?? {};
+    const { userId, name, description, frequency, tags } = body ?? {};
 
     if (!userId || !name) {
       return NextResponse.json({ error: "userId and name are required" }, { status: 400 });
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Le nom doit contenir entre 3 et 50 caractères" }, { status: 400 });
     }
 
-    const habit = await createHabit(userId, { name: name.trim(), description, frequency });
+    const habit = await createHabit(userId, { name: name.trim(), description, frequency, tags });
 
     return NextResponse.json({ message: "Habit created", habit }, { status: 201 });
   } catch (err: any) {
@@ -54,7 +54,7 @@ export async function POST(req: Request) {
 export async function PUT(req: Request) {
   try {
     const body = await req.json();
-    const { id, userId, name, description, frequency } = body ?? {};
+    const { id, userId, name, description, frequency, tags } = body ?? {};
 
     if (!id || !userId || !name) {
       return NextResponse.json({ error: "id, userId and name are required" }, { status: 400 });
@@ -66,7 +66,7 @@ export async function PUT(req: Request) {
 
    
 
-    const updated = await updateHabit(id, userId, { name: name.trim(), description, frequency });
+    const updated = await updateHabit(id, userId, { name: name.trim(), description, frequency, tags });
     if (!updated) {
       return NextResponse.json({ error: "Habit not found or unauthorized" }, { status: 404 });
     }

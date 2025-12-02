@@ -3,6 +3,21 @@ import { toggleProgress, getProgressByDate } from "@/lib/progress";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
+/**
+ * Parse une date depuis une chaîne (YYYY-MM-DD ou ISO string)
+ * Retourne une date à minuit en local
+ */
+function parseDate(dateString: string): Date {
+  // Si c'est au format YYYY-MM-DD
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+    const [year, month, day] = dateString.split("-").map(Number);
+    return new Date(year, month - 1, day, 0, 0, 0, 0);
+  }
+  // Sinon, parser comme ISO et normaliser à minuit local
+  const parsed = new Date(dateString);
+  return new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate(), 0, 0, 0, 0);
+}
+
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -15,7 +30,7 @@ export async function POST(
 
     const { id: habitId } = await params;
     const body = await req.json();
-    const date = body.date ? new Date(body.date) : new Date();
+    const date = body.date ? parseDate(body.date) : new Date();
 
     const result = await toggleProgress(habitId, date);
 
@@ -46,7 +61,7 @@ export async function GET(
     const { id: habitId } = await params;
     const { searchParams } = new URL(req.url);
     const dateParam = searchParams.get("date");
-    const date = dateParam ? new Date(dateParam) : new Date();
+    const date = dateParam ? parseDate(dateParam) : new Date();
 
     const progress = await getProgressByDate(habitId, date);
 

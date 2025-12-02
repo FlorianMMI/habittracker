@@ -113,7 +113,7 @@
     - Chaque jour : date, statut (fait/raté/en attente)
     - Jour actuel mis en évidence
     - Code couleur : vert (fait), rouge (raté), gris (en attente)
-    - Clic sur un jour → voir les détails
+    - Clic sur un jour → voir les détréails
 
 ---
 

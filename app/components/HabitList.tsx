@@ -4,17 +4,24 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Habit from "../ui/Habit";
 
-type Habit = {
+type Tag = {
+  id: string;
+  name: string;
+  emoji: string;
+};
+
+type HabitType = {
   id: string;
   userId: string;
   name: string;
   description?: string;
   frequency: "daily" | "weekly";
   createdAt: string;
+  tags?: Tag[];
 };
 
 export default function HabitList({ userId, refreshKey }: { userId: string; refreshKey?: number }) {
-  const [habits, setHabits] = useState<Habit[]>([]);
+  const [habits, setHabits] = useState<HabitType[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
