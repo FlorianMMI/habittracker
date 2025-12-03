@@ -2,10 +2,18 @@
  * Types pour le calendrier mensuel (US-014)
  */
 
+export interface Tag {
+  id: string;
+  name: string;
+  emoji?: string;
+}
+
 export interface HabitStatus {
   habitId: string;
   habitName: string;
   status: "done" | "pending";
+  frequency: "daily" | "weekly";
+  tags: Tag[];
 }
 
 export interface CalendarDayData {

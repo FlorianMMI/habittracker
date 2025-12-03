@@ -49,6 +49,12 @@ export default async function DailyHabitList({ userId }: { userId: string }) {
             key={habit.id}
             habitId={habit.id}
             habitName={habit.name}
+            frequency={habit.frequency as "daily" | "weekly"}
+            tags={(habit.tags || []).map((t) => ({
+              id: t.id,
+              name: t.name,
+              emoji: t.emoji ?? undefined,
+            }))}
             initialCompleted={!!progress}
             date={todayKey}
             isFuture={false}

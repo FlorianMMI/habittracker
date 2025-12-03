@@ -9,12 +9,20 @@ import { motion } from "motion/react";
 // TYPES
 // ============================================================================
 
+interface Tag {
+  id: string;
+  name: string;
+  emoji?: string;
+}
+
 interface DailyHabitCardProps {
   habitId: string;
   habitName: string;
   initialCompleted: boolean;
   date: string; // Format YYYY-MM-DD
   isFuture?: boolean;
+  frequency?: "daily" | "weekly";
+  tags?: Tag[];
   onToggle?: (completed: boolean) => void;
 }
 
@@ -32,6 +40,8 @@ export default function DailyHabitCard({
   initialCompleted,
   date,
   isFuture = false,
+  frequency = "daily",
+  tags = [],
   onToggle,
 }: DailyHabitCardProps) {
   const [completed, setCompleted] = useState(initialCompleted);
@@ -144,14 +154,42 @@ export default function DailyHabitCard({
 
         {/* Nom de l'habitude */}
         <div className="flex-1 min-w-0">
-          <h3
-            className={cn(
-              "font-semibold text-foreground transition-all duration-200",
-              completed && "text-muted-foreground line-through"
-            )}
-          >
-            {habitName}
-          </h3>
+          <div className="flex items-center gap-2">
+            <h3
+              className={cn(
+                "font-semibold text-foreground transition-all duration-200",
+                completed && "text-muted-foreground line-through"
+              )}
+            >
+              {habitName}
+            </h3>
+            {/* Badge fréquence */}
+            <span
+              className={cn(
+                "text-xs px-1.5 py-0.5 rounded-full font-medium",
+                frequency === "daily"
+                  ? "bg-chart-2/60"
+                  : "bg-chart-3/60"
+              )}
+            >
+              {frequency === "daily" ? "Quotidien" : "Hebdo"}
+            </span>
+          </div>
+
+          {/* Tags */}
+          {tags.length > 0 && (
+            <div className="flex gap-1.5 mt-1.5 flex-wrap">
+              {tags.map((tag) => (
+                <span
+                  key={tag.id}
+                  className="inline-flex items-center gap-1 text-xs bg-muted px-2 py-0.5 rounded-full"
+                >
+                  {tag.emoji && <span>{tag.emoji}</span>}
+                  <span className="truncate max-w-[80px]">{tag.name}</span>
+                </span>
+              ))}
+            </div>
+          )}
 
           {error && <p className="text-sm text-destructive mt-1 animate-fade-in">{error}</p>}
 
@@ -169,6 +207,9 @@ export default function DailyHabitCard({
         >
           {completed ? "Fait" : "Non fait"}
         </span>
+
+       
+        
       </div>
     </motion.div>
   );

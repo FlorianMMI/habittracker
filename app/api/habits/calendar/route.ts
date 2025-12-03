@@ -30,6 +30,12 @@ function createMidnightDate(year: number, month: number, day: number): Date {
 // TYPES
 // ============================================================================
 
+interface Tag {
+  id: string;
+  name: string;
+  emoji?: string;
+}
+
 export interface CalendarDayData {
   date: string;
   dayNumber: number;
@@ -43,6 +49,8 @@ export interface CalendarDayData {
     habitId: string;
     habitName: string;
     status: "done" | "pending";
+    frequency: "daily" | "weekly";
+    tags: Tag[];
   }[];
 }
 
@@ -144,6 +152,12 @@ export async function GET(request: NextRequest) {
         habitId: habit.id,
         habitName: habit.name,
         status: (dayProgress.has(habit.id) ? "done" : "pending") as "done" | "pending",
+        frequency: habit.frequency as "daily" | "weekly",
+        tags: (habit.tags || []).map((t) => ({
+          id: t.id,
+          name: t.name,
+          emoji: t.emoji ?? undefined,
+        })),
       }));
 
       const completedCount = habitsForDay.filter((h) => h.status === "done").length;
