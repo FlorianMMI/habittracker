@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import Link from "next/link";
@@ -16,17 +16,23 @@ export default function LoginPage() {
   const [showResendButton, setShowResendButton] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
-    // Vérifier si on revient de la vérification d'email
-    const verified = searchParams.get("verified");
-    if (verified === "1") {
-      setSuccessMessage("✅ Votre email a été validé avec succès ! Vous pouvez maintenant vous connecter.");
-    } else if (verified === "0") {
-      setError("❌ Le lien de validation est invalide ou a expiré.");
+    // Vérifier si on revient de la vérification d'email via l'URL
+    // Evite l'utilisation de `useSearchParams` qui peut provoquer une
+    // erreur de "CSR bailout" lors du prerendering/build.
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const verified = params.get("verified");
+      if (verified === "1") {
+        setSuccessMessage("✅ Votre email a été validé avec succès ! Vous pouvez maintenant vous connecter.");
+      } else if (verified === "0") {
+        setError("❌ Le lien de validation est invalide ou a expiré.");
+      }
+    } catch (err) {
+      // window peut ne pas être défini dans certains environnements; on ignore
     }
-  }, [searchParams]);
+  }, []);
 
 
 
