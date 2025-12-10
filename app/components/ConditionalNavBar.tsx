@@ -7,7 +7,7 @@ export default function ConditionalNavBar() {
   const pathname = usePathname();
   
   // Hide navbar on login and register pages
-  const hideNavbar = pathname === "/login" || pathname === "/register";
+  const hideNavbar = pathname === "/login" || pathname === "/register" || pathname === "/";
   
   if (hideNavbar) {
     return null;

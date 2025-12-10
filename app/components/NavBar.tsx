@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import LogoutButton from "../ui/LogoutButton";
 import { useTheme } from "../providers/ThemeProvider";
 import { ClairIcon, SombreIcon } from "@/lib/Icon";
+import LinkNav from "../ui/LinkNav";
 
 export default function NavBar() {
   const [open, setOpen] = useState(false);
@@ -13,21 +14,11 @@ export default function NavBar() {
 
   const NavContent = ({ onClose }: { onClose?: () => void }) => (
     <nav className="flex flex-col gap-4">
-      <Link 
-        href="/dashboard" 
-        className="block text-base text-foreground font-medium hover:text-primary transition-colors" 
-        onClick={onClose}
-      >
-        Dashboard
-      </Link>
+      <LinkNav name="Dashboard" path="dashboard" onClose={onClose} />
 
-      <Link 
-        href="/habits" 
-        className="block text-base text-foreground font-medium hover:text-primary transition-colors" 
-        onClick={onClose}
-      >
-        Habitudes
-      </Link>
+      <LinkNav name="Habitudes" path="habits" onClose={onClose} />
+
+      <LinkNav name="Profil" path="profile" onClose={onClose} />
 
       <button
         onClick={toggleTheme}

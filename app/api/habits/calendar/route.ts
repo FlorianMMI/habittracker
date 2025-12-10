@@ -148,17 +148,31 @@ export async function GET(request: NextRequest) {
 
       const dayProgress = progressByDate.get(dateKey) || new Map();
 
-      const habitsForDay = habits.map((habit) => ({
-        habitId: habit.id,
-        habitName: habit.name,
-        status: (dayProgress.has(habit.id) ? "done" : "pending") as "done" | "pending",
-        frequency: habit.frequency as "daily" | "weekly",
-        tags: (habit.tags || []).map((t) => ({
-          id: t.id,
-          name: t.name,
-          emoji: t.emoji ?? undefined,
-        })),
-      }));
+      // Filtrer les habitudes selon leur fréquence
+      const habitsForDay = habits
+        .filter((habit) => {
+          // Les habitudes quotidiennes s'affichent tous les jours
+          if (habit.frequency === "daily") {
+            return true;
+          }
+          // Les habitudes hebdomadaires s'affichent tous les jours de la semaine (lundi à dimanche)
+          // Elles ne sont pas filtrées par jour spécifique
+          if (habit.frequency === "weekly") {
+            return true;
+          }
+          return false;
+        })
+        .map((habit) => ({
+          habitId: habit.id,
+          habitName: habit.name,
+          status: (dayProgress.has(habit.id) ? "done" : "pending") as "done" | "pending",
+          frequency: habit.frequency as "daily" | "weekly",
+          tags: (habit.tags || []).map((t) => ({
+            id: t.id,
+            name: t.name,
+            emoji: t.emoji ?? undefined,
+          })),
+        }));
 
       const completedCount = habitsForDay.filter((h) => h.status === "done").length;
       const totalCount = habitsForDay.length;
