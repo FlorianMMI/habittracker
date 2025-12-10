@@ -22,6 +22,10 @@ Application web moderne de suivi d'habitudes construite avec Next.js 15, permett
 - ✅ **Calcul de streak** : Visualisation des streak et de la meilleur streak
 - ✅ **Graphiques et statistiques** : Visulaisation par Rechart de différentes stats 
 - ✅ **Tag** : Mise en place de différents tag qui peuvent servier de catégorie 
+ - ✅ **Vue calendrier des habitudes** : Vue calendrier mois/semaines des habitudes (les habitudes hebdomadaires peuvent être cochées et comptées chaque jour)
+ - ✅ **Profile & Stats** : Page profil avec `InfoProfile` et `ProfileChart` (statistiques + graphique par `recharts`)
+ - ✅ **Calcul de streak** : Visualisation des streaks (un "jour parfait" = 100% des habitudes complétées — daily + weekly)
+ - ✅ **Graphiques et statistiques** : Visualisation par `recharts` pour les 7 derniers jours et autres métriques
 
 ## 🛠️ Stack Technique
 
@@ -112,13 +116,18 @@ habittracker/
 │   │   ├── auth/              # Routes NextAuth
 │   │   ├── habits/            # CRUD habitudes
 │   │   └── register/          # Inscription
-│   ├── components/            # Composants réutilisables
+│   ├── components/            # Composants réutilisables (noeuds principaux)
 │   │   ├── Button.tsx
-│   │   ├── Input.tsx
-│   │   ├── HabitForm.tsx
+│   │   ├── NavBar.tsx
+│   │   ├── InfoProfile.tsx
+│   │   ├── ProfileChart.tsx
+│   │   ├── DailyHabitCard.tsx
 │   │   ├── HabitCard.tsx
-│   │   ├── Toast.tsx
-│   │   └── NavBar.tsx
+│   │   ├── HabitForm.tsx
+│   │   ├── HabitList.tsx
+│   │   ├── HabitsClientShell.tsx
+│   │   ├── DashboardClient.tsx
+│   │   └── Toast.tsx
 │   ├── dashboard/             # Page tableau de bord
 │   ├── habits/                # Pages gestion habitudes
 │   │   └── [id]/             # Page détails/modification
@@ -132,10 +141,11 @@ habittracker/
 │   ├── globals.css            # Styles globaux + variables CSS
 │   └── layout.tsx             # Layout racine
 ├── lib/                       # Logique métier
-│   ├── habits.ts              # Fonctions CRUD habitudes
+│   ├── habits.ts              # Fonctions CRUD habitudes (utilisées par API)
+│   ├── progress.ts            # Gestion des progressions (toggle, fetch)
 │   ├── users.ts               # Fonctions utilisateurs
 │   ├── prisma.ts              # Client Prisma
-│   └── utils.ts               # Utilitaires (cn, etc.)
+│   └── utils.ts               # Utilitaires (cn, date helpers, etc.)
 ├── prisma/
 │   ├── schema.prisma          # Schéma base de données
 │   └── migrations/            # Migrations
@@ -205,32 +215,6 @@ npx prisma studio
 - `description` : Description (optionnel)
 - `frequency` : "daily" ou "weekly"
 - `createdAt` : Date de création
-
-## 🚀 Déploiement Vercel
-
-1. **Pusher sur GitHub**
-   ```bash
-   git add .
-   git commit -m "Ready for deployment"
-   git push origin master
-   ```
-
-2. **Connecter à Vercel**
-   - Aller sur [vercel.com](https://vercel.com)
-   - Importer votre repository GitHub
-   - Configurer les variables d'environnement
-
-3. **Variables d'environnement Vercel**
-   ```
-   DATABASE_URL=postgresql://...
-   NEXTAUTH_URL=https://votre-app.vercel.app
-   NEXTAUTH_SECRET=...
-   EMAIL_USER=...
-   EMAIL_PASS=...
-   EMAIL_FROM=...
-   ```
-
-4. **Déployer** : Vercel build et déploie automatiquement !
 
 ## 📝 Conventions de Code
 
