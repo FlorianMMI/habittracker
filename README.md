@@ -117,23 +117,27 @@ habittracker/
 │   │   ├── habits/            # CRUD habitudes
 │   │   └── register/          # Inscription
 │   ├── components/            # Composants réutilisables (noeuds principaux)
+│   │   ├── Dashboard/         # Composants du tableau de bord
+│   │   │   ├── DailyHabitCard.tsx
+│   │   │   └── DashboardClient.tsx
+│   │   ├── Habits/            # Composants liés aux habitudes
+│   │   │   ├── HabitCard.tsx
+│   │   │   ├── HabitForm.tsx
+│   │   │   ├── HabitList.tsx
+│   │   │   └── HabitsClientShell.tsx
+│   │   ├── Profil/            # Page profil & statistiques
+│   │   │   ├── InfoProfile.tsx
+│   │   │   ├── ProfileChart.tsx
+│   │   │   └── StatCard.tsx
+│   │   ├── Skeleton/          # Skeletons / loaders
+│   │   │   ├── SDashboardClient.tsx
+│   │   │   └── SProfilPage.tsx
 │   │   ├── Button.tsx
+│   │   ├── ConditionalNavBar.tsx
+│   │   ├── Input.tsx
 │   │   ├── NavBar.tsx
-│   │   ├── InfoProfile.tsx
-│   │   ├── ProfileChart.tsx
-│   │   ├── DailyHabitCard.tsx
-│   │   ├── HabitCard.tsx
-│   │   ├── HabitForm.tsx
-│   │   ├── HabitList.tsx
-│   │   ├── HabitsClientShell.tsx
-│   │   ├── DashboardClient.tsx
-│   │   └── Toast.tsx
-│   ├── dashboard/             # Page tableau de bord
-│   ├── habits/                # Pages gestion habitudes
-│   │   └── [id]/             # Page détails/modification
-│   ├── login/                 # Page connexion
-│   ├── register/              # Page inscription
-│   ├── providers/             # Context Providers
+│   │   ├── Toast.tsx
+│   │   └── DailyHabitCard.tsx  # (si non présent dans Dashboard/)
 │   │   ├── AuthProvider.tsx
 │   │   ├── ToastProvider.tsx
 │   │   └── ThemeProvider.tsx
