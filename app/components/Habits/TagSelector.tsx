@@ -3,6 +3,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
+/// ===========================================================================
+/// TYPES
+/// ===========================================================================
+
+
 export interface TagData {
   name: string;
   emoji: string;
@@ -13,6 +18,10 @@ interface TagSelectorProps {
   onChange: (tags: TagData[]) => void;
   availableTags?: TagData[];
 }
+
+/// ===========================================================================
+/// COMPONENT TagSelector - Sélecteur de tags avec création personnalisée
+/// ===========================================================================
 
 // Liste des tags prédéfinis avec emojis
 const PRESET_TAGS: TagData[] = [
@@ -40,6 +49,10 @@ const POPULAR_EMOJIS = [
   "🏃", "🧘", "🏋️", "🚴", "🏊", "⚽", "🎾", "🏀", "🎮", "🎬",
   "📱", "💻", "🎧", "📷", "🎸", "🎹", "🎤", "🎨", "✏️", "📝",
 ];
+
+// ===========================================================================
+/// COMPONENT TagSelector - Sélecteur de tags avec création personnalisée
+// ===========================================================================
 
 export default function TagSelector({ selectedTags, onChange, availableTags = [] }: TagSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);

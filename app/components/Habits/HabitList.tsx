@@ -2,7 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Habit from "../ui/Habit";
+import Habit from "../../ui/Habit";
+
+/// ===========================================================================
+/// TYPES
+/// ===========================================================================
 
 type Tag = {
   id: string;
@@ -19,6 +23,10 @@ type HabitType = {
   createdAt: string;
   tags?: Tag[];
 };
+
+/// ===========================================================================
+/// COMPOSANT Liste des habitudes dans la page des habitudes
+/// ===========================================================================
 
 export default function HabitList({ userId, refreshKey }: { userId: string; refreshKey?: number }) {
   const [habits, setHabits] = useState<HabitType[]>([]);

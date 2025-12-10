@@ -1,4 +1,9 @@
-import { Flame, Target, Calendar, TrendingUp, Award, User } from "lucide-react";
+import { Flame, Target, TrendingUp, Award, User } from "lucide-react";
+
+// ==========================================================================
+// TYPES
+// ==========================================================================
+
 
 interface DailyStats {
   date: string;
@@ -28,6 +33,11 @@ interface InfoProfileProps {
   user?: UserInfo;
   stats: ProfileStats | null;
 }
+
+// ==========================================================================
+// COMPONENT des information de l'utilisateur sur page profil
+// ==========================================================================
+
 
 export default function InfoProfile({ user, stats }: InfoProfileProps) {
   return (

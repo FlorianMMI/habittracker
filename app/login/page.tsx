@@ -99,17 +99,6 @@ export default function LoginPage() {
             )}
           </form>
 
-          {/* Additional Options */}
-          <div className="mt-6 pt-4 border-t border-border">
-            <div className="flex items-center justify-between text-sm">
-              <Link 
-                href="#" 
-                className="text-primary hover:text-primary/80 transition-colors"
-              >
-                Mot de passe oublié ?
-              </Link>
-            </div>
-          </div>
         </div>
 
         {/* Footer */}

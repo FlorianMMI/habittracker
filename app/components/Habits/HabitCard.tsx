@@ -5,6 +5,10 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/app/providers/ToastProvider";
 import { EditIcon, DeleteIcon, MoreIcon } from "@/lib/Icon";
 
+/// ===========================================================================
+/// TYPES
+/// ===========================================================================
+
 type TagType = {
   id: string;
   name: string;
@@ -24,6 +28,10 @@ type HabitType = {
 interface HabitCardProps {
   habit: HabitType;
 }
+
+/// ===========================================================================
+/// COMPOSANT dans la liste des habitudes
+/// ===========================================================================
 
 export default function HabitCard({ habit }: HabitCardProps) {
   const router = useRouter();

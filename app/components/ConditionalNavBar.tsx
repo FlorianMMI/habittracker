@@ -6,7 +6,7 @@ import NavBar from "./NavBar";
 export default function ConditionalNavBar() {
   const pathname = usePathname();
   
-  // Hide navbar on login and register pages
+  // Chemin ou la navbar doit être cachée
   const hideNavbar = pathname === "/login" || pathname === "/register" || pathname === "/";
   
   if (hideNavbar) {

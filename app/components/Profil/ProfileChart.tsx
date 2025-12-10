@@ -10,6 +10,10 @@ import {
   Cell,
 } from "recharts";
 
+/// ===========================================================================
+/// TYPES
+/// ===========================================================================
+
 interface DailyStats {
   date: string;
   completed: number;
@@ -20,6 +24,10 @@ interface DailyStats {
 interface ProfileChartProps {
   weeklyStats: DailyStats[];
 }
+
+/// ===========================================================================
+/// COMPONENT ProfileChart - Affiche un graphique des statistiques hebdomadaires
+/// ===========================================================================
 
 export default function ProfileChart({ weeklyStats }: ProfileChartProps) {
   if (!weeklyStats || weeklyStats.length === 0) {

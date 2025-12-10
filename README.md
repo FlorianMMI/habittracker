@@ -18,25 +18,18 @@ Application web moderne de suivi d'habitudes construite avec Next.js 15, permett
 - ✅ **Mode sombre** : Thème clair/sombre avec sauvegarde des préférences
 - ✅ **Notifications toast** : Retours visuels pour toutes les actions
 - ✅ **Navigation intuitive** : Menu burger avec animations fluides
-
-### 🚀 Fonctionnalités à venir (V1.5 & V2.0)
-- 📅 Vue calendrier des habitudes
-- 🔥 Calcul des streaks (séries)
-- 📊 Graphiques et statistiques
-- 🏆 Système de badges
-- 📧 Résumés hebdomadaires par email
-- 🗂️ Catégories personnalisées
-- 📱 Fréquences custom
+- ✅ **Vue calendrier des habitudes** : Vue calendrier mois/semaines des habitudes
+- ✅ **Calcul de streak** : Visualisation des streak et de la meilleur streak
+- ✅ **Graphiques et statistiques** : Visulaisation par Rechart de différentes stats 
+- ✅ **Tag** : Mise en place de différents tag qui peuvent servier de catégorie 
 
 ## 🛠️ Stack Technique
 
 ### Frontend
-- **Framework** : Next.js 15.5.5 (App Router avec Turbopack)
+- **Framework** : Next.js 15.5.7 (App Router avec Turbopack) --> Ne contient pas la faille react2shell
 - **Language** : TypeScript 5 (strict mode)
 - **Styling** : Tailwind CSS v4 + tw-animate-css
-- **UI Components** : Composants custom basés sur shadcn/ui (style "new-york")
-- **Icons** : Lucide React v0.545.0
-- **Animations** : Framer Motion v10.12.8
+- **Animations** : Motion v10.12.8
 - **Fonts** : Geist Sans & Geist Mono
 
 ### Backend

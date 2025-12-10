@@ -19,7 +19,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // Create user with hashed password
+    // Créeer l'utilisateur avec son mot de passe hashé
     const user = await createUser({ firstName, lastName, email, password });
 
     // Générer un token de vérification et le stocker (valide 24h)

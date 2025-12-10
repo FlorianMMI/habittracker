@@ -116,3 +116,14 @@ export function ChevronRightIcon({ className }: { className?: string }) {
     </svg>
   );
 }
+
+
+export function loadingIcon(svgProps: SVGProps<SVGSVGElement>) {
+    return (
+
+      <svg className="animate-spin -ml-1 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+          <path className="opacity-75" fill="currentColor" d="m12 2a10 10 0 1 0 10 10h-4a6 6 0 1 1-6-6v4z"></path>
+      </svg>
+
+    )}

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import HabitForm from '@/app/components/HabitForm';
+import HabitForm from '@/app/components/Habits/HabitForm';
 
 export default function HabitDetailsClient({ id }: { id: string }) {
   const [habit, setHabit] = useState<any>(null);

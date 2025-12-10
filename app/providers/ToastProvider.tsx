@@ -1,7 +1,10 @@
 "use client";
 
+
+// Permet de gerer les toasts de notification dans l'application
+
 import React, { createContext, useContext, useState, useCallback } from "react";
-import Toast from "@/app/components/Toast";
+import Toast from "@/app/ui/Toast";
 
 interface ToastContextType {
   showToast: (message: string, type?: "success" | "error" | "info") => void;

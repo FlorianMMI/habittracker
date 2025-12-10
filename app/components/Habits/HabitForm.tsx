@@ -5,7 +5,12 @@ import { useRouter } from "next/navigation";
 import { Input } from "@/app/components/Input";
 import { Button } from "@/app/components/Button";
 import { useToast } from "@/app/providers/ToastProvider";
-import TagSelector, { TagData } from "@/app/components/TagSelector";
+import TagSelector, { TagData } from "@/app/components/Habits/TagSelector";
+
+
+/// ===========================================================================
+/// TYPES
+/// ===========================================================================
 
 interface HabitTag {
   id: string;
@@ -25,6 +30,12 @@ interface HabitFormProps {
     tags?: HabitTag[];
   };
 }
+
+/// ===========================================================================
+/// COMPOSANT Formulaire de création d'une habitude
+/// ===========================================================================
+
+
 
 export default function HabitForm({ userId, onCreated, onCancel, habit }: HabitFormProps) {
   const [name, setName] = useState(habit?.name ?? "");

@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import HabitForm from '@/app/components/HabitForm';
+import HabitForm from '@/app/components/Habits/HabitForm';
 import { useRouter } from 'next/navigation';
 
 interface HabitFormWrapperProps {

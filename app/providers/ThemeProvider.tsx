@@ -1,5 +1,8 @@
 "use client";
 
+
+// Permet de gerer le theme (clair/sombre) de l'application
+
 import { createContext, useContext, useEffect, useState } from "react";
 
 type Theme = "light" | "dark";

@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import CreateHabitButton from "@/app/components/CreateHabitButton";
-import HabitForm from "@/app/components/HabitForm";
+import CreateHabitButton from "@/app/components/Habits/CreateHabitButton";
+import HabitForm from "@/app/components/Habits/HabitForm";
 import { useRouter } from "next/navigation";
 
 export default function HabitsPageClient({ userId, children }: { userId: string; children: React.ReactNode }) {
