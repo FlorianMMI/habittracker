@@ -164,7 +164,8 @@ async function getWeeklyStats(userId: string): Promise<DailyStats[]> {
     const nextDate = new Date(date);
     nextDate.setDate(nextDate.getDate() + 1);
 
-    const completedCount = await prisma.progress.count({
+    // Récupérer les habitudes uniques complétées pour ce jour
+    const completedProgress = await prisma.progress.findMany({
       where: {
         habitId: { in: habitIds },
         date: {
@@ -172,7 +173,13 @@ async function getWeeklyStats(userId: string): Promise<DailyStats[]> {
           lt: nextDate,
         },
       },
+      select: {
+        habitId: true,
+      },
+      distinct: ['habitId'], // Ne compter qu'une fois chaque habitude
     });
+
+    const completedCount = completedProgress.length;
 
     const dayNames = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
     const dayName = dayNames[date.getDay()];

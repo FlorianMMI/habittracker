@@ -32,6 +32,11 @@ export const authOptions: AuthOptions = {
                         return null
                     }
 
+                    // Vérifier que l'email est validé (sécurité supplémentaire)
+                    if (!user.isValidated) {
+                        return null
+                    }
+
                     return {
                         id: user.id,
                         email: user.email,
