@@ -3,12 +3,21 @@
 import React, { useEffect } from "react";
 import { cn } from "@/lib/utils";
 
+// ==========================================================================
+// TYPES
+// ==========================================================================
+
 interface ToastProps {
   message: string;
   type?: "success" | "error" | "info";
   duration?: number;
   onClose: () => void;
 }
+
+
+/// ==========================================================================
+// COMPONENTS pour les TOASTS
+// ==========================================================================
 
 export default function Toast({ message, type = "success", duration = 3000, onClose }: ToastProps) {
   useEffect(() => {

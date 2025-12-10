@@ -112,6 +112,8 @@
   --sidebar-accent-foreground: #FFFFFF;
   --sidebar-border: rgba(0,0,0,0.10);
   --sidebar-ring: #FF6900;
+  --success: #10b981;
+  --success-foreground: #ffffff;
 }
 
 .dark {
@@ -148,6 +150,8 @@
   --sidebar-accent-foreground: #FFFFFF;
   --sidebar-border: rgba(255,255,255,0.20);
   --sidebar-ring: #FF6900;
+  --success: #059669;
+  --success-foreground: #ffffff;
 }
 
 @layer base {
@@ -173,16 +177,7 @@
 .animate-slideIn {
   animation: slideIn 0.3s ease-out;
 }
-/* Success color for completed habits */
-:root {
-  --success: #10b981;
-  --success-foreground: #ffffff;
-}
 
-.dark {
-  --success: #059669;
-  --success-foreground: #ffffff;
-}
 
 @keyframes scale-in {
   from {

@@ -68,7 +68,7 @@ export default function ProfilePage() {
           {/* Total completions */}
           <div className="mt-8 text-center py-4 border-t border-border">
             <p className="text-muted-foreground">
-              Total de routines complétées : <span className="font-semibold text-foreground">{stats?.totalCompletions || 0}</span>
+              Total de routines complétées : <span className="font-semibold text-foreground">{stats?.totalCompletions ?? 0}</span>
             </p>
           </div>
         </div>

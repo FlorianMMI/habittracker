@@ -1,4 +1,5 @@
 import { Flame, Target, TrendingUp, Award, User } from "lucide-react";
+import StatCard from "./StatCard";
 
 // ==========================================================================
 // TYPES
@@ -53,57 +54,57 @@ export default function InfoProfile({ user, stats }: InfoProfileProps) {
       </div>
 
       {/* User Info Card */}
-      <div className="bg-secondary/50 rounded-xl p-6 mb-8">
+      <div className="bg-secondary/50 dark:bg-foreground/10 rounded-xl p-6 mb-8">
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-            <User className="w-8 h-8 text-primary" />
+        <User className="w-8 h-8 text-primary" />
           </div>
-          <div>
-            <h2 className="text-xl font-semibold text-foreground">
-              {user?.firstName} {user?.lastName}
-            </h2>
-            <p className="text-muted-foreground">{user?.email}</p>
+          <div className="min-w-0">
+        <h2
+          className="text-xl font-semibold text-foreground truncate"
+          title={`${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim()}
+        >
+          {user?.firstName} {user?.lastName}
+        </h2>
+        <p
+          className="text-muted-foreground truncate"
+          title={user?.email ?? ""}
+        >
+          {user?.email}
+        </p>
           </div>
         </div>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        {/* Total Habits */}
-        <div className="bg-secondary/50 rounded-xl p-4 text-center">
-          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-2">
-            <Target className="w-5 h-5 text-primary" />
-          </div>
-          <p className="text-2xl font-bold text-foreground">{stats?.totalHabits || 0}</p>
-          <p className="text-sm text-muted-foreground">Routines</p>
-        </div>
+        <StatCard
+          title="Routines"
+          value={stats?.totalHabits ?? 0}
+          icon={<Target className="w-5 h-5 text-primary" />}
+          variant="primary"
+        />
 
-        {/* Current Streak */}
-        <div className="bg-secondary/50 rounded-xl p-4 text-center">
-          <div className="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center mx-auto mb-2">
-            <Flame className="w-5 h-5 text-orange-500" />
-          </div>
-          <p className="text-2xl font-bold text-foreground">{stats?.currentStreak || 0}</p>
-          <p className="text-sm text-muted-foreground">Streak actuel</p>
-        </div>
+        <StatCard
+          title="Streak actuel"
+          value={stats?.currentStreak ?? 0}
+          icon={<Flame className="w-5 h-5 text-orange-500" />}
+          variant="orange"
+        />
 
-        {/* Best Streak */}
-        <div className="bg-secondary/50 rounded-xl p-4 text-center">
-          <div className="w-10 h-10 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center mx-auto mb-2">
-            <Award className="w-5 h-5 text-yellow-500" />
-          </div>
-          <p className="text-2xl font-bold text-foreground">{stats?.bestStreak || 0}</p>
-          <p className="text-sm text-muted-foreground">Meilleur streak</p>
-        </div>
+        <StatCard
+          title="Meilleur streak"
+          value={stats?.bestStreak ?? 0}
+          icon={<Award className="w-5 h-5 text-yellow-500" />}
+          variant="yellow"
+        />
 
-        {/* Completion Rate */}
-        <div className="bg-secondary/50 rounded-xl p-4 text-center">
-          <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-2">
-            <TrendingUp className="w-5 h-5 text-green-500" />
-          </div>
-          <p className="text-2xl font-bold text-foreground">{stats?.completionRate || 0}%</p>
-          <p className="text-sm text-muted-foreground">Taux complétion</p>
-        </div>
+        <StatCard
+          title="Taux complétion"
+          value={`${stats?.completionRate ?? 0}%`}
+          icon={<TrendingUp className="w-5 h-5 text-green-500" />}
+          variant="green"
+        />
       </div>
 
      

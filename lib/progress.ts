@@ -4,6 +4,9 @@ import { prisma } from "./prisma";
 // TYPES
 // ============================================================================
 
+/**
+ * Représente une entrée de progression d'une habitude.
+ */
 export interface Progress {
   id: string;
   habitId: string;
@@ -17,7 +20,11 @@ export interface Progress {
 // ============================================================================
 
 /**
- * Formate une date en YYYY-MM-DD sans conversion UTC
+ * Formate une date en `YYYY-MM-DD` sans conversion UTC.
+ * Utilisé principalement pour générer des clés lisibles ou comparer des jours.
+ *
+ * @param {Date} date - Date à formater.
+ * @returns {string} Chaîne `YYYY-MM-DD`.
  */
 function formatDateKey(date: Date): string {
   const year = date.getFullYear();
@@ -27,18 +34,27 @@ function formatDateKey(date: Date): string {
 }
 
 /**
- * Normalise une date à minuit (local)
+ * Normalise une date à minuit (heure locale) en supprimant l'heure.
+ * Cela évite les erreurs dues aux fuseaux horaires lors de comparaisons journalières.
+ *
+ * @param {Date} date - Date d'entrée (peut contenir une heure).
+ * @returns {Date} Nouvelle Date positionnée à 00:00:00.000 (locale).
  */
 function normalizeToMidnight(date: Date): Date {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
 }
 
 // ============================================================================
-// FONCTIONS DE PROGRESSION
+// FONCTIONS DE PROGRESSION (accès avec Prisma)
 // ============================================================================
 
 /**
- * Crée une entrée de progression pour une habitude à une date donnée
+ * Crée une entrée de progression pour une habitude à une date donnée.
+ * La date est normalisée à minuit local avant la création.
+ *
+ * @param {string} habitId - Identifiant de l'habitude.
+ * @param {Date} [date=new Date()] - Date cible (par défaut aujourd'hui).
+ * @returns {Promise<Progress>} L'entrée créée.
  */
 export async function createProgress(habitId: string, date: Date = new Date()): Promise<Progress> {
   const normalizedDate = normalizeToMidnight(date);
@@ -54,7 +70,12 @@ export async function createProgress(habitId: string, date: Date = new Date()): 
 }
 
 /**
- * Récupère la progression pour une habitude à une date donnée
+ * Récupère la progression pour une habitude à une date donnée.
+ * Utilise l'index/contrainte unique composite `habitId_date` si défini dans Prisma.
+ *
+ * @param {string} habitId - Identifiant de l'habitude.
+ * @param {Date} [date=new Date()] - Date cible.
+ * @returns {Promise<Progress | null>} Progress si trouvée, sinon `null`.
  */
 export async function getProgressByDate(habitId: string, date: Date = new Date()): Promise<Progress | null> {
   const normalizedDate = normalizeToMidnight(date);
@@ -71,7 +92,10 @@ export async function getProgressByDate(habitId: string, date: Date = new Date()
 }
 
 /**
- * Récupère toutes les progressions pour une habitude
+ * Récupère toutes les progressions pour une habitude, triées par date décroissante.
+ *
+ * @param {string} habitId - Identifiant de l'habitude.
+ * @returns {Promise<Progress[]>} Liste des progressions.
  */
 export async function getProgressByHabit(habitId: string): Promise<Progress[]> {
   const progress = await prisma.progress.findMany({
@@ -82,8 +106,17 @@ export async function getProgressByHabit(habitId: string): Promise<Progress[]> {
 }
 
 /**
- * Toggle la progression : crée si n'existe pas, supprime si existe
- * Pour les habitudes hebdomadaires (weekly), valide toute la semaine (lundi à dimanche)
+ * Basculer l'état de progression pour une habitude à une date donnée.
+ * - Si une entrée existe, elle est supprimée (ou toute la semaine si `weekly`).
+ * - Si aucune entrée n'existe, elle est créée (ou la semaine complète si `weekly`).
+ *
+ * Retourne un objet `{ completed, progress }` où `completed` indique si
+ * la progression est maintenant marquée comme faite, et `progress` est
+ * l'entrée pour la date demandée (ou `null`).
+ *
+ * @param {string} habitId - Identifiant de l'habitude.
+ * @param {Date} [date=new Date()] - Date cible.
+ * @returns {Promise<{ completed: boolean; progress: Progress | null }>} Résultat de l'opération.
  */
 export async function toggleProgress(
   habitId: string,
@@ -143,7 +176,12 @@ export async function toggleProgress(
 }
 
 /**
- * Récupère les progressions pour plusieurs habitudes à une date donnée
+ * Récupère les progressions pour plusieurs habitudes à une date donnée.
+ * Renvoie une Map `habitId -> Progress` pour accès rapide.
+ *
+ * @param {string[]} habitIds - Liste d'identifiants d'habitudes.
+ * @param {Date} [date=new Date()] - Date cible.
+ * @returns {Promise<Map<string, Progress>>} Map des progressions trouvées.
  */
 export async function getProgressForHabits(
   habitIds: string[],
@@ -167,7 +205,10 @@ export async function getProgressForHabits(
 }
 
 /**
- * Supprime toutes les progressions pour une habitude
+ * Supprime toutes les progressions pour une habitude (opération destructive).
+ *
+ * @param {string} habitId - Identifiant de l'habitude.
+ * @returns {Promise<void>}
  */
 export async function deleteProgressByHabit(habitId: string): Promise<void> {
   await prisma.progress.deleteMany({
@@ -176,7 +217,11 @@ export async function deleteProgressByHabit(habitId: string): Promise<void> {
 }
 
 /**
- * Obtient les dates de la semaine en cours (lundi à dimanche)
+ * Obtient les dates de la semaine en cours (lundi à dimanche), chacune
+ * normalisée à minuit (locale). Utile pour opérations en lot sur la semaine.
+ *
+ * @param {Date} [referenceDate=new Date()] - Date de référence.
+ * @returns {Date[]} Tableau de 7 Date (lundi..dimanche) normalisées.
  */
 function getWeekDates(referenceDate: Date = new Date()): Date[] {
   const dates: Date[] = [];
